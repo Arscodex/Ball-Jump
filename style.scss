@@ -1,0 +1,94 @@
+/* Resets */
+
+body, h1, h2, h3, h4, div, ul, li, a, p, div{
+	margin:0;
+	padding:0;
+	text-decoration:none;
+	list-style:none;
+	font-family:Arial, sans;
+}
+
+/* Main color variables */
+
+$mainLight:#6699FF;
+$mainDark:#000099;
+$white:#eeeeee;
+$black:#222222;
+
+/* Wrapper */
+
+
+/* Header */
+
+#header{
+	background-color:$black;
+}
+
+/* Game Area */
+
+#mainContent{
+	background-color:$white;
+}
+
+#game{
+	margin:0 auto;
+	width:30%;
+}
+
+
+
+/* Subscreen */
+
+#subscreen{
+	
+}
+
+#numbers{
+	
+}
+
+#button{
+	
+}
+
+/* Gameboard */
+
+#gameboard{
+	width:100%;
+	min-height:500px;
+	position:relative;
+}
+
+#gameboardSVG{
+	width:100%;
+}
+
+.gameSquare{
+	float:left;
+	position:absolute;
+	&:nth-child(odd){
+		background-color:$mainLight;
+	}
+	&:nth-child(even){
+		background-color:$mainDark;
+	}
+}
+
+/* The following game elements are for the svg elements first, followed by their shapes */
+
+.gameElementSquare{
+	position:absolute;
+}
+
+.gameElementSquareRect{
+	
+}
+
+.gameElementBall{
+	position:absolute;
+	z-index:1;
+}
+
+.gameElementBallCircle{
+	
+}

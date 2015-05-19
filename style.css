@@ -1,0 +1,49 @@
+/* Resets */
+body, h1, h2, h3, h4, div, ul, li, a, p, div {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  list-style: none;
+  font-family: Arial, sans; }
+
+/* Main color variables */
+/* Wrapper */
+/* Header */
+#header {
+  background-color: #222222; }
+
+/* Game Area */
+#mainContent {
+  background-color: #eeeeee; }
+
+#game {
+  margin: 0 auto;
+  width: 30%; }
+
+/* Subscreen */
+/* Gameboard */
+#gameboard {
+  width: 100%;
+  min-height: 500px;
+  position: relative; }
+
+#gameboardSVG {
+  width: 100%; }
+
+.gameSquare {
+  float: left;
+  position: absolute; }
+  .gameSquare:nth-child(odd) {
+    background-color: #6699FF; }
+  .gameSquare:nth-child(even) {
+    background-color: #000099; }
+
+/* The following game elements are for the svg elements first, followed by their shapes */
+.gameElementSquare {
+  position: absolute; }
+
+.gameElementBall {
+  position: absolute;
+  z-index: 1; }
+
+/*# sourceMappingURL=style.css.map */
