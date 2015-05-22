@@ -12,19 +12,60 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
 #header {
   background-color: #222222; }
 
+#title {
+  color: #eeeeee;
+  text-align: center;
+  font-family: Arial, sans;
+  font-size: 20px;
+  font-weight: bold; }
+
 /* Game Area */
 #mainContent {
-  background-color: #eeeeee; }
+  padding-top: 10px; }
 
 #game {
   margin: 0 auto;
   width: 30%; }
 
 /* Subscreen */
+#display {
+  width: 100%;
+  height: 20px;
+  background-color: #444444;
+  color: #dddddd;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  padding-top: 4px;
+  margin-bottom: 10px; }
+
+.button {
+  width: 99%;
+  height: 20px;
+  border: solid 1px #444444;
+  background-color: #dddddd;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  padding-top: 4px;
+  margin-bottom: 10px; }
+  .button:hover {
+    cursor: pointer;
+    background-color: #444444;
+    color: #dddddd; }
+  .button:active {
+    background-color: #444444;
+    color: #dddddd; }
+
+.buttonActive {
+  background-color: #444444;
+  color: #dddddd; }
+
 /* Gameboard */
 #gameboard {
   width: 100%;
-  min-height: 500px;
+  margin: 10px 0;
+  min-height: 100px;
   position: relative; }
 
 #gameboardSVG {

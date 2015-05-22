@@ -1,8 +1,6 @@
 
 
-//Building the level ==== THIS NEEDS TO BE A FUNCTION ASAP ====
 
-var currentLevel = 2;
 
 //==The selected ball should be gold, highlight possible move spaces, and be stored in a variable for when one clicks on the move spaces. Clicking on the ball removes the default click event and adds a secondary one that will cancel the move if clicked on again. There should be a loop that builds an array of the "open" spaces available for the ball. These spaces then receive styling that changes their color to reflect their highlighting. Yellow might be good. Despite the checkered pattern, the highlighted styling should be consistent, not a dark and a light. 
 
@@ -15,34 +13,52 @@ var gameboardY;
 
 var levels = [
 	{
-		level:1,
-		gameboardWidth:3,
-		gameboardHeight:3,
+		level:0,
+		gameboardWidth:5,
+		gameboardHeight:5,
 		balls:[
-			{gamePosX:1, gamePosY:1},
-			{gamePosX:1, gamePosY:2},
-			{gamePosX:2, gamePosY:2},
-			{gamePosX:2, gamePosY:3}
+			{gamePosY:3, gamePosX:3}
+		]
+	},
+	{
+		level:1,
+		password:'BEGINNER',
+		gameboardWidth:5,
+		gameboardHeight:5,
+		balls:[
+			{gamePosY:3, gamePosX:1},
+			{gamePosY:3, gamePosX:2},
+			{gamePosY:3, gamePosX:4},
+			{gamePosY:3, gamePosX:5},
+			{gamePosY:4, gamePosX:4},
+			{gamePosY:5, gamePosX:4}
 		]
 	},
 	{
 		level:2,
+		password:'ROOKIE',
 		gameboardWidth:5,
 		gameboardHeight:5,
 		balls:[
-			{gamePosX:1, gamePosY:2},
-			{gamePosX:2, gamePosY:3},
-			{gamePosX:3, gamePosY:3},
-			{gamePosX:4, gamePosY:4},
-			{gamePosX:4, gamePosY:5},
-			{gamePosX:5, gamePosY:2},
-			{gamePosX:5, gamePosY:3},
-			{gamePosX:5, gamePosY:4}
+			{gamePosY:1, gamePosX:2},
+			{gamePosY:1, gamePosX:4},
+			{gamePosY:2, gamePosX:2},
+			{gamePosY:2, gamePosX:4},
+			{gamePosY:3, gamePosX:1},
+			{gamePosY:3, gamePosX:2},
+			{gamePosY:3, gamePosX:4},
+			{gamePosY:3, gamePosX:5}
+
 		]
 	}
+		
 ];
 
-var levelLayout = levels[currentLevel - 1];
+//Building the level
+
+var currentLevel = 1;
+var gameboard = document.getElementById('gameboard');
+
 var gameSquares = document.getElementsByClassName('gameElementSquare');
 var gameBalls = document.getElementsByClassName('gameElementBall');
 //The currently selected game piece. 
@@ -55,17 +71,30 @@ var totalJumpedBalls;
 var totalBallsNeeded; 
 
 //Generate the game elements
-window.onload = function(){
+window.onload = buildLevel(1);
+
+
+function buildLevel(number){
+	console.log(currentLevel);
+	var levelLayout = levels[number];
+	totalJumpedBalls = 0;
+	totalBallsNeeded = levelLayout.balls.length;
+	var currentDisplay = document.getElementById('display');
+	currentDisplay.innerHTML = 'Level: ' + number;
+	var gameAreaWidth = document.getElementById('gameboard').clientWidth;
+	gameboardX = levelLayout.gameboardWidth;
+	gameboardY = levelLayout.gameboardHeight;
+	var gameElementWidth = Math.floor(gameAreaWidth / gameboardX);
 	for(i=0; i<levelLayout.balls.length; i++){
 		var gamePosX = levelLayout.balls[i].gamePosX;
 		var gamePosY = levelLayout.balls[i].gamePosY;
-		gameboardX = levelLayout.gameboardWidth;
-		gameboardY = levelLayout.gameboardHeight;
-		makeBall(gamePosX, gamePosY, i);
+		makeBall(gamePosX, gamePosY, i, gameElementWidth);
 	}
 	totalBallsNeeded = levelLayout.balls.length -1;
-	makeSquares();
+	makeSquares(gameElementWidth);
 
+	gameboard.style.height = gameSquares[0].clientHeight*gameboardY +'px';
+	gameboard.style.width = gameSquares[0].clientWidth*gameboardX + 'px';
 };
 
 
@@ -75,9 +104,9 @@ window.onload = function(){
 
 
 
-function makeBall(gamePosX, gamePosY, ballNumber){
+function makeBall(gamePosX, gamePosY, ballNumber, elementWidth){
 	var gameAreaWidth = document.getElementById('gameboard').clientWidth;
-	var gameBallWidth = Math.floor(gameAreaWidth / gameboardX);
+	var gameBallWidth = elementWidth;
 	var gameBallRadius = gameBallWidth / 2.5;
 	var gameboard = document.getElementById('gameboard');
 	var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -148,7 +177,7 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 		//clear out any active squares first
 		for(i=0;i<gameSquares.length;i++){
 			if(gameSquares[i].activeSquare){
-				gameSquares[i].jumpedBallIndex = 0;
+				gameSquares[i].jumpedBallIndex = null;
 				gameSquares[i].activeSquare = false;
 				gameSquares[i].highlightSquare();
 			}
@@ -157,14 +186,6 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 		//These variables check the ball selected, and the surrounding squares. 
 		var baseX = this.gamePosX;
 		var baseY = this.gamePosY;
-		var moveUp = ((baseY-3)*gameboardX) + (baseX);
-		var adjacentUp = ((baseY-2)*gameboardX) + (baseX);
-		var moveDown = ((baseY+1)*gameboardX) + (baseX);
-		var adjacentDown = ((baseY)*gameboardX) + (baseX);
-		var moveLeft = ((baseY-1)*gameboardX) + (baseX-2);
-		var adjacentLeft = ((baseY-1)*gameboardX) + (baseX-1);
-		var moveRight = ((baseY-1)*gameboardX) + (baseX+2);
-		var adjacentRight = ((baseY-1)*gameboardX) + (baseX+1);
 
 		//Below, the following checks are made: 
 		//1. See if the legal move is on the board.
@@ -174,7 +195,12 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 
 		//Check the top
 		if(baseY > 2 && this.activeBall){
+			var moveUp = ((baseY-3)*gameboardX) + (baseX);
+			var adjacentUp = ((baseY-2)*gameboardX) + (baseX);
+			
 			if(gameSquares[adjacentUp-1].occupied && !gameSquares[moveUp-1].occupied){
+				console.log('move up: ' + moveUp + '\n ' +
+						'adjacent up: ' + adjacentUp);
 				for(i=0;i<gameBalls.length;i++){
 					if(gameBalls[i].gamePos === adjacentUp){
 						gameSquares[moveUp-1].jumpedBallIndex = gameBalls[i].ballNumber;
@@ -187,7 +213,12 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 		}
 		//Check the bottom
 		if(baseY < (gameboardY-1) && this.activeBall){
+			var moveDown = ((baseY+1)*gameboardX) + (baseX);
+			var adjacentDown = ((baseY)*gameboardX) + (baseX);
+			
 			if(gameSquares[adjacentDown-1].occupied && !gameSquares[moveDown-1].occupied){
+				console.log('move down: ' + moveDown + '\n ' +
+						'adjacent down: ' + adjacentDown);
 				for(i=0;i<gameBalls.length;i++){
 					if(gameBalls[i].gamePos === adjacentDown){
 						gameSquares[moveDown-1].jumpedBallIndex = gameBalls[i].ballNumber;
@@ -200,7 +231,12 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 		}
 		//Check to the left
 		if(baseX > 2 && this.activeBall){
+			var moveLeft = ((baseY-1)*gameboardX) + (baseX-2);
+			var adjacentLeft = ((baseY-1)*gameboardX) + (baseX-1);
+			
 			if(gameSquares[adjacentLeft-1].occupied && !gameSquares[moveLeft-1].occupied){
+				console.log('move left: ' + moveLeft + '\n ' +
+						'adjacent left: ' + adjacentLeft);
 				for(i=0;i<gameBalls.length;i++){
 					if(gameBalls[i].gamePos === adjacentLeft){
 						gameSquares[moveLeft-1].jumpedBallIndex = gameBalls[i].ballNumber;
@@ -213,7 +249,12 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 		}
 		//Check to the right
 		if(baseX < (gameboardX - 1) && this.activeBall){
+			var moveRight = ((baseY-1)*gameboardX) + (baseX+2);
+			var adjacentRight = ((baseY-1)*gameboardX) + (baseX+1);
+
 			if(gameSquares[adjacentRight-1].occupied && !gameSquares[moveRight-1].occupied){
+				console.log('move right: ' + moveRight + '\n ' +
+				'adjacent right: ' + adjacentRight);
 				for(i=0;i<gameBalls.length;i++){
 					if(gameBalls[i].gamePos === adjacentRight){
 						gameSquares[moveRight-1].jumpedBallIndex = gameBalls[i].ballNumber;
@@ -230,7 +271,7 @@ function makeBall(gamePosX, gamePosY, ballNumber){
 }
 
 function ballClick(){
-	console.log('this ball number:' + this.ballNumber);
+	console.log('ball number: ' + this.ballNumber);
 	//This sequence comes up if a ball has been selected without selecting it again.  
 	if(selectedBall){
 		//The last selected ball is selected again, cancelling it out. 
@@ -266,9 +307,8 @@ function ballClick(){
 	}
 }
 
-function gameElementSquare(element, square){
-	var gameAreaWidth = document.getElementById('gameboard').clientWidth;
-	var gameSquareWidth = Math.floor(gameAreaWidth / gameboardX);
+function gameElementSquare(element, square, elementWidth){
+	var gameSquareWidth = elementWidth;
 	element.setAttribute('width', gameSquareWidth);
 	element.setAttribute('height', gameSquareWidth);
 	square.setAttribute('width', gameSquareWidth);
@@ -284,11 +324,11 @@ function gameElementSquare(element, square){
 	element.style.left = (element.gamePosX - 1) * gameSquareWidth + 'px';
 }
 
-function makeSquares(){
+function makeSquares(elementWidth){
 	for(i=0; i<gameboardY; i++){
 		var gamePosY = i + 1;
 		for(j=0; j<gameboardX; j++){
-			var gameboard = document.getElementById('gameboard');
+
 			var svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 			var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
 			var gamePosX = j + 1;
@@ -298,7 +338,7 @@ function makeSquares(){
 			svg.gamePosY = gamePosY;
 			svg.gamePosX = gamePosX;
 			svg.gamePos = ((svg.gamePosY-1)*gameboardX)+svg.gamePosX;
-			gameElementSquare(svg, rect);
+			gameElementSquare(svg, rect, elementWidth);
 			svg.occupied = false;
 			var gameBalls = document.getElementsByClassName('gameElementBall');
 			for(k=0; k<gameBalls.length; k++){
@@ -309,9 +349,9 @@ function makeSquares(){
 			//Check to see if the square is highlighted as a legal move.
 			svg.activeSquare = false;
 			//Set the ball index that will be affected if this square is selected. 
-			svg.jumpedBallIndex = 0;
+			svg.jumpedBallIndex = null;
 			//The jumpedSquareIndex does the same, but tracks the square that held the ball.
-			svg.jumpedSquareIndex = 0;
+			svg.jumpedSquareIndex = null;
 			svg.highlightSquare = function(){
 				var currentSquareRect = document.getElementsByClassName('gameElementSquareRect')[this.gamePos - 1];
 				if(!this.activeSquare){
@@ -329,9 +369,10 @@ function makeSquares(){
 				}
 			};
 			svg.onclick = function(){
-				console.log('occupied?:' + this.occupied);
+				console.log('occupied?: ' + this.occupied);
+				console.log('jumped ball index: ' + this.jumpedBallIndex);
+				console.log('jumped square index: ' + this.jumpedSquareIndex);
 				if(this.activeSquare && selectedBall){
-					console.log(this.jumpedBallIndex);
 					gameSquares[selectedBall.gamePos-1].occupied = false;
 					//Always refresh all positional properties of a moved element.
 					selectedBall.gamePosX = this.gamePosX;
@@ -340,11 +381,13 @@ function makeSquares(){
 					selectedBall.moveBall();
 					gameSquares[this.jumpedSquareIndex].occupied = false;
 					gameBalls[this.jumpedBallIndex].style.left='-999px';
-
+					gameBalls[this.jumpedBallIndex].gamePosX = 0;
+					gameBalls[this.jumpedBallIndex].gamePosY = 0;
+					gameBalls[this.jumpedBallIndex].gamePos = 0;
 					for(i=0;i<gameSquares.length;i++){
 						if(gameSquares[i].activeSquare){
-							gameSquares[i].jumpedBallIndex = 0;
-							gameSquares[i].jumpedSquareIndex = 0;
+							gameSquares[i].jumpedBallIndex = null;
+							gameSquares[i].jumpedSquareIndex = null;
 							gameSquares[i].activeSquare = false;
 							gameSquares[i].highlightSquare();
 						}
@@ -354,6 +397,21 @@ function makeSquares(){
 					selectedBall = '';
 					currentBallCircle = '';
 					this.occupied = true;
+					totalJumpedBalls +=1;
+					if(totalJumpedBalls >= totalBallsNeeded){
+						currentLevel +=1;
+						if(currentLevel === levels.length){
+							console.log('current level: ' + currentLevel);
+							console.log('levels length: ' + levels.length);
+							display.innerHTML = 'Congratulations! That\'s All, Folks!';
+						}
+						else{
+							while(gameboard.hasChildNodes()){
+								gameboard.removeChild(gameboard.lastChild);
+							}
+							buildLevel(currentLevel);
+						}
+					}
 					
 				}
 			}
