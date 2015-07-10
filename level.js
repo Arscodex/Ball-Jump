@@ -3,33 +3,62 @@
 	//buildLevel generates all of the elements necessary for a game level. 
 	//The number parameter in the signature is the current level. 
 
-	function buildLevel(number){
-		var levelLayout = levels[number];
-		totalJumpedBalls = 0;
-		totalBallsNeeded = levelLayout.balls.length;
-		var currentDisplay = document.getElementById('display');
-		currentDisplay.innerHTML = 'Level: ' + number;
-		var gameAreaWidth = document.getElementById('gameboard').clientWidth;
-		gameboardX = levelLayout.gameboardWidth;
-		gameboardY = levelLayout.gameboardHeight;
-		var gameElementWidth = Math.floor(gameAreaWidth / gameboardX);
-		for(i=0; i<levelLayout.balls.length; i++){
-			var gamePosX = levelLayout.balls[i].gamePosX;
-			var gamePosY = levelLayout.balls[i].gamePosY;
-			ball.makeBall(gamePosX, gamePosY, i, gameElementWidth);
-		}
-		totalBallsNeeded = levelLayout.balls.length -1;
-		square.makeSquares(gameElementWidth);
+	var gameboard = document.getElementById('gameboard')
+	var gameWidth = document.getElementById('game').clientWidth;
+	var gameDisplay = document.getElementById('display');
+	var buttons = document.getElementsByClassName('button');
 
-		gameboard.style.height = gameSquares[0].clientHeight*gameboardY +'px';
-		gameboard.style.width = gameSquares[0].clientWidth*gameboardX + 'px';
-	}
+	var levelLayout;
+	var gameElementWidth;
 
 	var level = {
 
 		//Assign buildLevel to the level scope
 
-		buildLevel: buildLevel,
+		buildLevel: function (number){
+			levelLayout = levels[number];
+			totalJumpedBalls = 0;
+			totalBallsNeeded = levelLayout.balls.length;
+			var currentDisplay = document.getElementById('display');
+			currentDisplay.innerHTML = 'Level: ' + number;
+			
+			gameboardX = levelLayout.gameboardSquaresX;
+			gameboardY = levelLayout.gameboardSquaresY;
+			gameElementWidth = Math.floor(gameWidth / gameboardX);
+			for(i=0; i<levelLayout.balls.length; i++){
+				var gamePosX = levelLayout.balls[i].gamePosX;
+				var gamePosY = levelLayout.balls[i].gamePosY;
+				ball.makeBall(gamePosX, gamePosY, i, gameElementWidth);
+			}
+			totalBallsNeeded = levelLayout.balls.length -1;
+			square.makeSquares(gameElementWidth);
+
+			gameboard.style.height = gameElementWidth*gameboardY +'px';
+			gameboard.style.width = gameElementWidth*gameboardX + 'px';
+			gameDisplay.style.width = gameElementWidth*gameboardX + 'px';
+			for(i=0;i<buttons.length;i++){
+				buttons[i].style.width = Math.floor((gameElementWidth*gameboardX)*0.99) + 'px';
+			}
+		},
+
+		//Refresh all elements when the window is resized
+
+		refresh: function(){
+				
+			gameWidth = document.getElementById('game').clientWidth;
+			levelLayout = levels[currentLevel];
+			gameboardX = levelLayout.gameboardSquaresX;
+			gameElementWidth = Math.floor(gameWidth / gameboardX);
+			var refreshedElementWidth = Math.floor(game.clientWidth / gameboardX);
+			square.refresh(refreshedElementWidth);
+			ball.refresh(refreshedElementWidth);
+			gameboard.style.height = refreshedElementWidth*gameboardY +'px';
+			gameboard.style.width = refreshedElementWidth*gameboardX + 'px';
+			gameDisplay.style.width = gameElementWidth*gameboardX + 'px';
+			for(i=0;i<buttons.length;i++){
+				buttons[i].style.width = Math.floor((gameElementWidth*gameboardX)*0.99) + 'px';
+			}
+		},
 
 		//newGame is only called if you want an entirely new game with fully-refreshed variables.
 
@@ -41,7 +70,7 @@
 				while(gameboard.hasChildNodes()){
 					gameboard.removeChild(gameboard.lastChild);
 				}
-				buildLevel(1);
+				level.buildLevel(1);
 			}
 
 		},
@@ -55,10 +84,10 @@
 			}
 			if(killScreen){
 				currentLevel -=1;
-				buildLevel(currentLevel);
+				level.buildLevel(currentLevel);
 			}
 			else{
-				buildLevel(currentLevel);
+				level.buildLevel(currentLevel);
 			}
 		}
 

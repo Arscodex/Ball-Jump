@@ -26,8 +26,17 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
 #game {
   margin: 0 auto;
   width: 30%; }
+  @media screen and (max-width: 1000px) {
+    #game {
+      width: 50%; } }
+  @media screen and (max-width: 600px) {
+    #game {
+      width: 100%; } }
 
 /* Subscreen */
+#subscreen {
+  width: 100%; }
+
 #display {
   width: 100%;
   height: 20px;
@@ -37,7 +46,7 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
   font-size: 14px;
   font-weight: bold;
   padding-top: 4px;
-  margin-bottom: 10px; }
+  margin: 0 auto 10px; }
 
 .button {
   width: 99%;
@@ -48,7 +57,7 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
   font-size: 14px;
   font-weight: bold;
   padding-top: 4px;
-  margin-bottom: 10px; }
+  margin: 0 auto 10px; }
   .button:hover {
     cursor: pointer;
     background-color: #444444;
@@ -64,7 +73,7 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
 /* Gameboard */
 #gameboard {
   width: 100%;
-  margin: 10px 0;
+  margin: 10px auto;
   min-height: 100px;
   position: relative; }
 

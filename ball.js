@@ -58,10 +58,10 @@
 			//The ballNumber is mostly useful for tracking balls in tests.
 			svg.ballNumber = ballNumber;
 			svg.activeBall = false;
-			svg.setAttribute('width', gameBallWidth);
-			svg.setAttribute('height', gameBallWidth);
-			svg.style.left = (gamePosX - 1) * gameBallWidth;
-			svg.style.top = (gamePosY - 1) * gameBallWidth;
+			svg.setAttribute('width', gameBallWidth+'px');
+			svg.setAttribute('height', gameBallWidth+'px');
+			svg.style.left = (gamePosX - 1) * gameBallWidth + 'px';
+			svg.style.top = (gamePosY - 1) * gameBallWidth + 'px';
 			circle.setAttribute('cx', gameBallWidth/2);
 			circle.setAttribute('cy', gameBallWidth/2);
 			circle.setAttribute('r', gameBallRadius);
@@ -107,8 +107,8 @@
 			svg.appendChild(circle);
 			//The moveBall method to move this ball to another square.
 			svg.moveBall = function(){
-				this.style.left = (this.gamePosX - 1) * gameBallWidth;
-				this.style.top = (this.gamePosY - 1) * gameBallWidth;
+				this.style.left = (this.gamePosX - 1) * gameBallWidth + 'px';
+				this.style.top = (this.gamePosY - 1) * gameBallWidth + 'px';
 			}
 			//The checkMoves method to see legal moves for the ball. 
 			svg.checkMoves = function(){
@@ -198,6 +198,25 @@
 			}
 			svg.addEventListener('click', ballClick);
 			document.getElementById('gameboard').appendChild(svg);
+		},
+
+		refresh:function(number){
+			var currentBall;
+			for(i=0;i<gameBalls.length; i++){
+				if(gameBalls[i].gamePos>0){
+					currentBall = gameBalls[i];
+					currentBallCircle = document.getElementsByClassName('gameElementBallCircle')[currentBall.ballNumber];
+					currentBall.setAttribute('width', number+'px');
+					currentBall.setAttribute('height', number+'px');
+					currentBall.style.left = (currentBall.gamePosX-1) * number + 'px';
+					currentBall.style.top = (currentBall.gamePosY-1) * number + 'px';
+					//currentBallCircle.setAttribute('width', number+'px');
+					//currentBallCircle.setAttribute('height', number+'px');
+					currentBallCircle.setAttribute('cx', number/2);
+					currentBallCircle.setAttribute('cy', number/2);
+					currentBallCircle.setAttribute('r', number/2.5);
+				}
+			}
 		}
 
 	}

@@ -1,7 +1,4 @@
 
-//==The selected ball should be gold, highlight possible move spaces, and be stored in a variable for when one clicks on the move spaces. Clicking on the ball removes the default click event and adds a secondary one that will cancel the move if clicked on again. There should be a loop that builds an array of the "open" spaces available for the ball. These spaces then receive styling that changes their color to reflect their highlighting. Yellow might be good. Despite the checkered pattern, the highlighted styling should be consistent, not a dark and a light. 
-
-//Generate the tiles used for the gameboard, a 5X5 grid
 
 //The number of squares in the gameboard's width(columns)
 var gameboardX;
@@ -12,8 +9,8 @@ var levels = [
 	{
 		level:0,
 		password:'LEVELZERO',
-		gameboardWidth:5,
-		gameboardHeight:5,
+		gameboardSquaresX:5,
+		gameboardSquaresY:5,
 		balls:[
 			{gamePosY:3, gamePosX:3}
 		]
@@ -21,8 +18,8 @@ var levels = [
 	{
 		level:1,
 		password:'BEGINNER',
-		gameboardWidth:5,
-		gameboardHeight:5,
+		gameboardSquaresX:5,
+		gameboardSquaresY:5,
 		balls:[
 			{gamePosY:3, gamePosX:1},
 			{gamePosY:3, gamePosX:2},
@@ -35,8 +32,8 @@ var levels = [
 	{
 		level:2,
 		password:'PRACTICE',
-		gameboardWidth:5,
-		gameboardHeight:5,
+		gameboardSquaresX:5,
+		gameboardSquaresY:5,
 		balls:[
 
 			{gamePosY:2, gamePosX:1},
@@ -51,8 +48,8 @@ var levels = [
 	{
 		level:3,
 		password:'JUMPER',
-		gameboardWidth:5,
-		gameboardHeight:5,
+		gameboardSquaresX:5,
+		gameboardSquaresY:5,
 		balls:[
 
 			{gamePosY:2, gamePosX:1},
@@ -67,8 +64,8 @@ var levels = [
 	{
 		level:4,
 		password:'ROOKIE',
-		gameboardWidth:5,
-		gameboardHeight:5,
+		gameboardSquaresX:5,
+		gameboardSquaresY:5,
 		balls:[
 			{gamePosY:1, gamePosX:2},
 			{gamePosY:1, gamePosX:4},
@@ -83,8 +80,8 @@ var levels = [
 	{
 		level:5,
 		password:'DOUGHNUT',
-		gameboardWidth:5,
-		gameboardHeight:5,
+		gameboardSquaresX:5,
+		gameboardSquaresY:5,
 		balls:[
 			{gamePosY:1, gamePosX:2},
 			{gamePosY:2, gamePosX:2},
@@ -95,8 +92,7 @@ var levels = [
 			{gamePosY:4, gamePosX:4},
 			{gamePosY:4, gamePosX:5}
 		]
-	}
-		
+	}	
 ];
 
 //Building the level
@@ -118,6 +114,10 @@ var killScreen;
 
 //Generate the game elements
 window.onload = level.buildLevel(1);
+window.onresize = function(){
+	level.refresh;
+	ball.refresh;
+}
 document.getElementById('button1').addEventListener('click', level.resetLevel);
 document.getElementById('button2').addEventListener('click', level.newGame);
 

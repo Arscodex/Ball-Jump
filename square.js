@@ -29,7 +29,6 @@
 			totalJumpedBalls +=1;
 			if(totalJumpedBalls >= totalBallsNeeded){
 				currentLevel +=1;
-				console.log(currentLevel);
 				if(currentLevel === levels.length){
 					display.innerHTML = 'Congratulations! That\'s All, Folks!';
 					killScreen = true;
@@ -102,10 +101,10 @@
 
 		gameElementSquare: function (element, square, elementWidth){
 			var gameSquareWidth = elementWidth;
-			element.setAttribute('width', gameSquareWidth);
-			element.setAttribute('height', gameSquareWidth);
-			square.setAttribute('width', gameSquareWidth);
-			square.setAttribute('height', gameSquareWidth);
+			element.setAttribute('width', gameSquareWidth + 'px');
+			element.setAttribute('height', gameSquareWidth + 'px');
+			square.setAttribute('width', gameSquareWidth + 'px');
+			square.setAttribute('height', gameSquareWidth + 'px');
 
 			if(element.gamePos%2 === 0){
 				square.setAttribute('fill', '#000099');
@@ -115,6 +114,22 @@
 			//Position the element
 			element.style.top = (element.gamePosY - 1) * gameSquareWidth + 'px';
 			element.style.left = (element.gamePosX - 1) * gameSquareWidth + 'px';
+		},
+
+		refresh: function(number){
+			var currentSquare;
+			for(i=0; i<gameSquares.length; i++){
+				if(gameSquares[i].gamePos>0){
+					currentSquare = gameSquares[i];
+					currentSquareRect = document.getElementsByClassName('gameElementSquareRect')[currentSquare.gamePos - 1];
+					currentSquare.setAttribute('width', number+'px');
+					currentSquare.setAttribute('height', number+'px');
+					currentSquare.style.left = (currentSquare.gamePosX-1) * number + 'px';
+					currentSquare.style.top = (currentSquare.gamePosY-1) * number + 'px';
+					currentSquareRect.setAttribute('width', number+'px');
+					currentSquareRect.setAttribute('height', number+'px');
+				}
+			}
 		}
 	}
 
