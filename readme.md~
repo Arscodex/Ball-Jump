@@ -6,7 +6,11 @@ This game, currently in a playable prototype stage, will eventually have several
 
 The first version is meant to develop the mechanics and interface. Clicking on a ball turns it from silver to gold to highlight it, and red squares on the gameboard appear to show legal moves. 
 
-###Goals for this version
+###Lessons Learned in This Version
+
+This game is similar to those that begin with a series of balls arranged into a triangle or square pattern on a board. Balls can only move when they jump over another ball (in real life, this might also be pegs on a wooden board). When a ball does jump over another ball, the jumped ball is eliminated. The objective is to end up with only one ball. 
+
+###Goals
 
 1. I wanted to generate all graphics using SVG so that there would be no assets to manage. This could show that one doesn't need anything but the tools built into the front end to build a fun game. No libraries, no outside graphic editors.
 2.  The code would be simple enough that I could design levels quickly.

@@ -31,7 +31,7 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
       width: 50%; } }
   @media screen and (max-width: 600px) {
     #game {
-      width: 100%; } }
+      width: 80%; } }
 
 /* Subscreen */
 #subscreen {
@@ -72,7 +72,6 @@ body, h1, h2, h3, h4, div, ul, li, a, p, div {
 
 /* Gameboard */
 #gameboard {
-  width: 100%;
   margin: 10px auto;
   min-height: 100px;
   position: relative; }

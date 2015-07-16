@@ -24,7 +24,7 @@
 			
 			gameboardX = levelLayout.gameboardSquaresX;
 			gameboardY = levelLayout.gameboardSquaresY;
-			gameElementWidth = Math.floor(gameWidth / gameboardX);
+			gameElementWidth = Math.floor((gameWidth*0.9) / gameboardX);
 			for(i=0; i<levelLayout.balls.length; i++){
 				var gamePosX = levelLayout.balls[i].gamePosX;
 				var gamePosY = levelLayout.balls[i].gamePosY;
@@ -48,12 +48,11 @@
 			gameWidth = document.getElementById('game').clientWidth;
 			levelLayout = levels[currentLevel];
 			gameboardX = levelLayout.gameboardSquaresX;
-			gameElementWidth = Math.floor(gameWidth / gameboardX);
-			var refreshedElementWidth = Math.floor(game.clientWidth / gameboardX);
-			square.refresh(refreshedElementWidth);
-			ball.refresh(refreshedElementWidth);
-			gameboard.style.height = refreshedElementWidth*gameboardY +'px';
-			gameboard.style.width = refreshedElementWidth*gameboardX + 'px';
+			gameElementWidth = Math.floor((gameWidth*0.9) / gameboardX);
+			square.refresh(gameElementWidth);
+			ball.refresh(gameElementWidth);
+			gameboard.style.height = gameElementWidth*gameboardY +'px';
+			gameboard.style.width = gameElementWidth*gameboardX + 'px';
 			gameDisplay.style.width = gameElementWidth*gameboardX + 'px';
 			for(i=0;i<buttons.length;i++){
 				buttons[i].style.width = Math.floor((gameElementWidth*gameboardX)*0.99) + 'px';

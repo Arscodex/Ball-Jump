@@ -116,7 +116,6 @@ var killScreen;
 window.onload = level.buildLevel(1);
 window.onresize = function(){
 	level.refresh;
-	ball.refresh;
 }
 document.getElementById('button1').addEventListener('click', level.resetLevel);
 document.getElementById('button2').addEventListener('click', level.newGame);
